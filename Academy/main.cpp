@@ -1,8 +1,11 @@
-#include<iostream>
+﻿#include<iostream>
 #include<string>
 using std::cout;
 using std::cin;
 using std::endl;
+
+#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string&first_name, unsigned int age
+#define HUMAN_GIVE_PARAMETERS last_name, first_name,age
 
 class Human
 {
@@ -36,7 +39,7 @@ public:
 		this->age = age;
 	}
 	/////      Constructor   //////////
-	Human(const std::string& last_nmae, const std::string&first_name, unsigned int age)
+	Human(HUMAN_TAKE_PARAMETERS)
 	{
 		set_last_name(last_name);
 		set_first_name(first_name);
@@ -49,12 +52,14 @@ public:
 	}
 
 	/////     Methods       /////////
-	void print()const
+	virtual void print()const
 	{
 		cout<<last_name<<" "<<first_name<< " " << age << " years.\n";
 	}
 };
 
+#define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
+#define STUDENT_GIVE_PARAMETERS  last_name,  first_name,  age,specialty,  group, year,  rating, attendance
 class Student :public Human
 {
 	std::string specialty;
@@ -104,11 +109,7 @@ public:
 		this->attendance = attendance;
 	}
 	////    Constructor    /////
-	Student
-	(
-		const std::string& last_name, const std::string& first_name, unsigned int age,
-		const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
-	) :Human(last_name, first_name, age)
+	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS):Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_specialty(specialty);
 		set_group(group);
@@ -175,24 +176,53 @@ public:
 class Graduate :public Student
 {
 	std::string subject;
+	std::string diploma;
 public:
 	const std::string& get_subject()const
 	{
 		return subject;
 	}
-	void set_subject(const std::string& subdject)
+	const std::string& get_diploma()const
 	{
-		this->subject = subdject;
+		return diploma;
 	}
+	void set_subject(const std::string& subject)
+	{
+		this->subject = subject;
+	}
+	void set_diploma(const std::string& diploma)
+	{
+		this->diploma = diploma;
+	}
+	/////    Constructor   ////////
 	Graduate
 	(const std::string& last_name, const std::string& first_name, unsigned int age,
-		const std::string& specialty, const std::string& group, unsigned int year, 
-		double rating, double attendance,const std::string subdject
-		) :Student()
+		const std::string& specialty, const std::string& group, unsigned int year,
+		double rating, double attendance, const std::string subject,const std::string diploma
+	) :Student(last_name, first_name, age, specialty, group, year, rating, attendance)
+	{
+		set_subject(subject);
+		set_diploma(diploma);
+		cout << "GConstructor:\t" << this << endl;
+	}
+	~Graduate()
+	{
+		cout << "GDestructor:\t" << this << endl;
+	}
+	void print()const
+	{
+		Student::print();
+		cout << subject << diploma << endl;
+	}
 };
+
+//#define INHERITANCE_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef INHERITANCE_CHECK
+
 	Human human("Montana", "Antonio", 25);
 	human.print();
 
@@ -201,4 +231,26 @@ void main()
 
 	Teacher man("Ichigo", "Kurosaki", 36, "Professional in his field", 10);
 	man.print();
+
+	Graduate dip("Jhon", "Constantin", 25, "Chemistry", "SS_152", 1, 90, 85, "Ecología", "Laboratory work");
+	dip.print();
+#endif // INHERITANCE_CHECK
+
+	//Generalisation(объеденили  одном месте)
+	Human* group[] =
+	{
+		new Student("Pinkman","Jassie",23,"Chemistry","WW_220",1,80,90),
+		new Teacher("White", "Walter",50,"Chemistry",25),
+		new Graduate("Schreder","Hank",40,"Criminalistics","WW_220",5,95,80,"How to catch Heisenberg", "Walter White"),
+		new Student("Vercetti","Tomas",30,"Theft","Vice",3,90,85),
+		new Teacher("Diaz","Ricardo",50,"Weapons distribution",20),
+		new Teacher("Einstein","Albert",143,"Astronomy",100)
+	};
+    cout << "...................................\n";
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		group[i]->print();
+		cout << "...................................\n";
+		
+	}
 }
