@@ -58,6 +58,11 @@ public:
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " years";
+}
+
 #define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS  last_name,  first_name,  age,specialty,  group, year,  rating, attendance
 class Student :public Human
@@ -130,6 +135,17 @@ public:
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	//os << (Human&)obj;
+	return os << (Human&)obj
+		<< " " <<obj.get_specialty() 
+		<< " " << obj.get_group() 
+		<< " " << obj.get_year() 
+		<< " " << obj.get_rating() 
+		<< " " << obj.get_attendance();
+}
+
 class Teacher :public Human
 {
 	std::string specialty;
@@ -172,6 +188,13 @@ public:
 		cout << specialty << " " << experience << endl;
 	}
 };
+
+std::ostream& operator<<(std::ostream& os, const Teacher&obj)
+{
+	return os <<(Human&)obj
+		<<" "<< obj.get_specialty()
+		<< " " << obj.get_experience();
+}
 
 class Graduate :public Student
 {
@@ -216,6 +239,13 @@ public:
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Graduate& obj)
+{
+	return os << (Student&)obj
+		<<" "<<obj.get_diploma()
+		<<" "<<obj.get_subject();
+}
+
 //#define INHERITANCE_CHECK
 
 void main()
@@ -251,8 +281,15 @@ void main()
 	{
 		cout << typeid(*group[i]).name() << endl;
 		//group[i]->print();
-		cout << *group[i] << endl;
+		//cout << *group[i] << endl;
+		if (typeid(*group[i]) == typeid(Teacher))cout << *dynamic_cast<Teacher*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Student))cout << *dynamic_cast<Student*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Graduate))cout << *dynamic_cast<Graduate*>(group[i]) << endl;
 		cout << "...................................\n";
 		
+	}
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]);i++)
+	{
+		delete group[i];
 	}
 }
