@@ -1,4 +1,4 @@
-﻿#include<iostream>
+#include<iostream>
 #include<string>
 using std::cout;
 using std::cin;
@@ -46,7 +46,7 @@ public:
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
 	}
-    ~Human()
+	~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
@@ -54,7 +54,7 @@ public:
 	/////     Methods       /////////
 	virtual void print()const
 	{
-		cout<<last_name<<" "<<first_name<< " " << age << " years.\n";
+		cout << last_name << " " << first_name << " " << age << " years.\n";
 	}
 };
 
@@ -109,7 +109,7 @@ public:
 		this->attendance = attendance;
 	}
 	////    Constructor    /////
-	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS):Human(HUMAN_GIVE_PARAMETERS)
+	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_specialty(specialty);
 		set_group(group);
@@ -198,7 +198,7 @@ public:
 	Graduate
 	(const std::string& last_name, const std::string& first_name, unsigned int age,
 		const std::string& specialty, const std::string& group, unsigned int year,
-		double rating, double attendance, const std::string subject,const std::string diploma
+		double rating, double attendance, const std::string subject, const std::string diploma
 	) :Student(last_name, first_name, age, specialty, group, year, rating, attendance)
 	{
 		set_subject(subject);
@@ -215,47 +215,3 @@ public:
 		cout << subject << diploma << endl;
 	}
 };
-
-//#define INHERITANCE_CHECK
-
-void main()
-{
-	setlocale(LC_ALL, "");
-#ifdef INHERITANCE_CHECK
-
-	Human human("Montana", "Antonio", 25);
-	human.print();
-
-	Student pinkman("Pinkman", "Jessie", 23, "Chemistry", "WW_220", 1, 90, 85);
-	pinkman.print();
-
-	Teacher man("Ichigo", "Kurosaki", 36, "Professional in his field", 10);
-	man.print();
-
-	Graduate dip("Jhon", "Constantin", 25, "Chemistry", "SS_152", 1, 90, 85, "Ecología", "Laboratory work");
-	dip.print();
-#endif // INHERITANCE_CHECK
-
-	//Generalisation(объеденили  одном месте)
-	Human* group[] =
-	{
-		new Student("Pinkman","Jassie",23,"Chemistry","WW_220",1,80,90),
-		new Teacher("White", "Walter",50,"Chemistry",25),
-		new Graduate("Schreder","Hank",40,"Criminalistics","WW_220",5,95,80,"How to catch Heisenberg", "Walter White"),
-		new Student("Vercetti","Tomas",30,"Theft","Vice",3,90,85),
-		new Teacher("Diaz","Ricardo",50,"Weapons distribution",20),
-		new Teacher("Einstein","Albert",143,"Astronomy",100)
-	};
-    cout << "...................................\n";
-	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
-	{
-		//cout << typeid(*group[i]).name() << endl;
-		group[i]->print();
-		cout << "...................................\n";
-		
-	}
-	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
-	{
-		delete group[i];
-	}
-}
