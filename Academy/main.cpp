@@ -52,12 +52,16 @@ public:
 	}
 
 	/////     Methods       /////////
-	virtual void print()const
+	virtual std::ostream& print(std::ostream& os /*= std::cout*/)const
 	{
-		cout<<last_name<<" "<<first_name<< " " << age << " years.\n";
+		return os << last_name << " " << first_name << " " << age << " years.\n";
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
 #define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS  last_name,  first_name,  age,specialty,  group, year,  rating, attendance
 class Student :public Human
@@ -109,7 +113,7 @@ public:
 		this->attendance = attendance;
 	}
 	////    Constructor    /////
-	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS):Human(HUMAN_GIVE_PARAMETERS)
+	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_specialty(specialty);
 		set_group(group);
@@ -123,10 +127,10 @@ public:
 		cout << "SDestructor:\t" << this << endl;
 	}
 	//////    Methods    /////
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Human::print();
-		cout << specialty + " " + group << " " << year << " " << rating << " " << attendance << endl;
+		Human::print(os);
+		return os << specialty + " " + group << " " << year << " " << rating << " " << attendance << endl;
 	}
 };
 
@@ -166,10 +170,10 @@ public:
 	{
 		cout << "TDestructor:\t" << this << endl;
 	}
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Human::print();
-		cout << specialty << " " << experience << endl;
+		Human::print(os);
+		return os << specialty << " " << experience << endl;
 	}
 };
 
@@ -198,7 +202,7 @@ public:
 	Graduate
 	(const std::string& last_name, const std::string& first_name, unsigned int age,
 		const std::string& specialty, const std::string& group, unsigned int year,
-		double rating, double attendance, const std::string subject,const std::string diploma
+		double rating, double attendance, const std::string subject, const std::string diploma
 	) :Student(last_name, first_name, age, specialty, group, year, rating, attendance)
 	{
 		set_subject(subject);
@@ -209,10 +213,10 @@ public:
 	{
 		cout << "GDestructor:\t" << this << endl;
 	}
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Student::print();
-		cout << subject << diploma << endl;
+		//Student::print(os);
+		return Student::print(os) << subject << diploma << endl;
 	}
 };
 
@@ -246,13 +250,16 @@ void main()
 		new Teacher("Diaz","Ricardo",50,"Weapons distribution",20),
 		new Teacher("Einstein","Albert",143,"Astronomy",100)
 	};
-    cout << "...................................\n";
+	cout << "...................................\n";
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		cout << typeid(*group[i]).name() << endl;
 		//group[i]->print();
 		cout << *group[i] << endl;
 		cout << "...................................\n";
-		
+	}
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
 	}
 }
