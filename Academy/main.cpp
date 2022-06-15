@@ -1,5 +1,7 @@
 ﻿#include<iostream>
+#include<fstream>
 #include<string>
+#include<iomanip>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -56,11 +58,22 @@ public:
 	{
 		return os << last_name << " " << first_name << " " << age << " years.\n";
 	}
+	virtual std::ofstream& print(std::ofstream& ofs)const
+	{
+		ofs.width(20);
+		ofs << std::left;
+		ofs << last_name + " " + first_name << age;
+		return ofs;
+	}
 };
 
 std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
 	return obj.print(os);
+}
+std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
+{
+	return obj.print(ofs);
 }
 #define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS  last_name,  first_name,  age,specialty,  group, year,  rating, attendance
@@ -132,6 +145,20 @@ public:
 		Human::print(os);
 		return os << specialty + " " + group << " " << year << " " << rating << " " << attendance << endl;
 	}
+	std::ofstream& print(std::ofstream& ofs)const
+	{
+		Human::print(ofs)<<" ";
+		ofs.width(20);
+		ofs << std::left;
+		ofs << specialty;
+		ofs.width(8);
+		ofs << group << " " << year;
+		ofs.width(8);
+		ofs << std::right;
+		ofs << std::setprecision(2) << std::fixed;
+		ofs<< " " << rating << " " << attendance;
+		return ofs;
+	}
 };
 
 class Teacher :public Human
@@ -174,6 +201,13 @@ public:
 	{
 		Human::print(os);
 		return os << specialty << " " << experience << endl;
+	}
+	std::ofstream& print(std::ofstream& ofs) const
+	{
+		Human::print(ofs);
+		ofs.width(15);
+		ofs << " "<<specialty << " " << experience;
+		return ofs;
 	}
 };
 
@@ -218,6 +252,11 @@ public:
 		//Student::print(os);
 		return Student::print(os) << subject << diploma << endl;
 	}
+	std::ofstream& print(std::ofstream& ofs)const
+	{
+		Student::print(ofs) << subject << diploma;
+		return ofs;
+	}
 };
 
 //#define INHERITANCE_CHECK
@@ -243,13 +282,14 @@ void main()
 	//Generalisation(объеденили  одном месте)
 	Human* group[] =
 	{
-		new Student("Pinkman","Jassie",23,"Chemistry","WW_220",1,80,90),
+		new Student("Pinkman","Jassie",23,"Chemistry","WW_220",1,91.2,90),
 		new Teacher("White", "Walter",50,"Chemistry",25),
-		new Graduate("Schreder","Hank",40,"Criminalistics","WW_220",5,95,80,"How to catch Heisenberg", "Walter White"),
+		new Graduate("Schreder","Hank",40,"Criminalistics","WW_220",5,82.7,80,"How to catch Heisenberg", "Walter White"),
 		new Student("Vercetti","Tomas",30,"Theft","Vice",3,90,85),
 		new Teacher("Diaz","Ricardo",50,"Weapons distribution",20),
 		new Teacher("Einstein","Albert",143,"Astronomy",100)
 	};
+	std::ofstream fout("Academy.txt");
 	cout << "...................................\n";
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
@@ -257,7 +297,11 @@ void main()
 		//group[i]->print();
 		cout << *group[i] << endl;
 		cout << "...................................\n";
+		
+		fout << *group[i] << endl;
 	}
+	fout.close();
+	system("notepad Academy.txt");
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
