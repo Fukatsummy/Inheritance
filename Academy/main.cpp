@@ -7,64 +7,11 @@ using std::endl;
 #define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string&first_name, unsigned int age
 #define HUMAN_GIVE_PARAMETERS last_name, first_name,age
 
-class Human
-{
-protected:
-	std::string last_name;
-	std::string first_name;
-	unsigned int age;
-public:
-	const std::string& get_last_name()const
-	{
-		return last_name;
-	}
-	const std::string& get_first_name()const
-	{
-		return first_name;
-	}
-	unsigned int get_age()const
-	{
-		return age;
-	}
-	void set_last_name(const std::string& last_name)
-	{
-		this->last_name = last_name;
-	}
-	void set_first_name(const std::string& first_name)
-	{
-		this->first_name = first_name;
-	}
-	void set_age(unsigned int age)
-	{
-		this->age = age;
-	}
-	/////      Constructor   //////////
-	Human(HUMAN_TAKE_PARAMETERS)
-	{
-		set_last_name(last_name);
-		set_first_name(first_name);
-		set_age(age);
-		cout << "HConstructor:\t" << this << endl;
-	}
-    virtual~Human()
-	{
-		cout << "HDestructor:\t" << this << endl;
-	}
-	
-	/////     Methods       /////////
-	virtual void print()const
-	{
-		cout<<last_name<<" "<<first_name<< " " << age << " years.\n";
-	}
-};
-std::ostream& operator<<(std::ostream& os, const Human& obj)
-	{
-		return os << obj.get_last_name()
-			<< " " << obj.get_first_name()
-			<< " " << obj.get_age() << " years";
-	}
+
+
 #define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS  last_name,  first_name,  age,specialty,  group, year,  rating, attendance
+
 class Student :public Human
 {
 	std::string specialty;
