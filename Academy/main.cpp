@@ -62,7 +62,10 @@ public:
 	{
 		ofs.width(20);
 		ofs << std::left;
-		ofs << last_name + " " + first_name << age;
+		ofs << last_name + " " + first_name;
+		ofs.width(4);
+		ofs << std::right;
+		ofs << age;
 		return ofs;
 	}
 };
@@ -204,11 +207,11 @@ public:
 	}
 	std::ofstream& print(std::ofstream& ofs) const
 	{
-		Human::print(ofs);
-		ofs.width();
+		Human::print(ofs) << " ";
+		ofs.width(25);
 		ofs << std::left;
-		ofs << " " << specialty << " ";
-		ofs.width(20);
+		ofs << specialty << " ";
+		ofs.width(4);
 		ofs << std::right;
 		ofs<< experience;
 		return ofs;
@@ -259,8 +262,11 @@ public:
 	std::ofstream& print(std::ofstream& ofs)const
 	{
 		Student::print(ofs);
+		ofs.width(25);
 		ofs << std::right;
-		ofs<< subject << diploma;
+		ofs << subject;
+		ofs.width(5);
+		ofs<< " " << diploma;
 		return ofs;
 	}
 };
