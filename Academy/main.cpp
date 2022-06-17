@@ -205,8 +205,12 @@ public:
 	std::ofstream& print(std::ofstream& ofs) const
 	{
 		Human::print(ofs);
-		ofs.width(15);
-		ofs << " "<<specialty << " " << experience;
+		ofs.width();
+		ofs << std::left;
+		ofs << " " << specialty << " ";
+		ofs.width(20);
+		ofs << std::right;
+		ofs<< experience;
 		return ofs;
 	}
 };
@@ -254,7 +258,9 @@ public:
 	}
 	std::ofstream& print(std::ofstream& ofs)const
 	{
-		Student::print(ofs) << subject << diploma;
+		Student::print(ofs);
+		ofs << std::right;
+		ofs<< subject << diploma;
 		return ofs;
 	}
 };
