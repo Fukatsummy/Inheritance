@@ -68,9 +68,9 @@ public:
 		ofs << age;
 		return ofs;
 	}
-	virtual std::istream& scan(std::istream& ifs)
+	virtual std::ifstream& scan(std::ifstream& ifs)
 	{
-		std::string buffer;
+//		std::string buffer;
 		ifs >> last_name >> first_name >> age;
 		return ifs;
 	}
@@ -336,7 +336,6 @@ Human** load(const std::string& filename,int& n)
 		//Возвращаемся в начало файла
 		fin.clear();
 		fin.seekg(0);
-		
 		for (int i = 0; i < n; i++)
 		{
 			std::getline(fin, buffer, ':');
@@ -395,7 +394,7 @@ void main()
 		//group[i]->print();
 		cout << *group[i] << endl;
 		cout << "...................................\n";
-         cout << typeid(*group[i]).name() << ":\t";
+         fout << typeid(*group[i]).name() << ":\t";
 		fout << *group[i] << endl;
 	}
 	fout.close();
@@ -406,8 +405,9 @@ void main()
 	}
 #endif // !WRITE_TO_FILE
 
+#ifndef WRITE_TO_FILE
 	int n = 0;
-	Human** group = load("Academy.txt",n);
+	Human** group = load("Academy.txt", n);
 
 	for (int i = 0; i < n; i++)
 	{
@@ -417,7 +417,7 @@ void main()
 	{
 		delete group[i];
 	}
-
 	delete[]group;
+#endif // !WRITE_TO_FILE
 
 }

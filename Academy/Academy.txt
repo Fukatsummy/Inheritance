@@ -1,6 +1,6 @@
-Pinkman Jassie        23 Chemistry           WW_220   1        91.20 90.00
-White Walter          50 Chemistry                   25
-Schreder Hank         40 Criminalistics      WW_220   5        82.70 80.00  How to catch Heisenberg     Walter White
-Vercetti Tomas        30 Theft               Vice     3        90.00 85.00
-Diaz Ricardo          50 Weapons distribution        20
-Einstein Albert      143 Astronomy                  100
+class Student:	Pinkman Jassie        23 Chemistry           WW_220   1        91.20 90.00
+class Teacher:	White Walter          50 Chemistry                   25
+class Graduate:	Schreder Hank         40 Criminalistics      WW_220   5        82.70 80.00  How to catch Heisenberg     Walter White
+class Student:	Vercetti Tomas        30 Theft               Vice     3        90.00 85.00
+class Teacher:	Diaz Ricardo          50 Weapons distribution        20
+class Teacher:	Einstein Albert      143 Astronomy                  100
