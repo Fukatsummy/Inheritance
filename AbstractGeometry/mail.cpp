@@ -8,9 +8,9 @@ namespace Geometry
 {
 	enum Color
 	{
-		red=0x000000FF,
-		green=0x0000FF00,
-		blue=0x00FF0000,
+		red = 0x000000FF,
+		green = 0x0000FF00,
+		blue = 0x00FF0000,
 
 		console_default = 0x07,
 		console_blue = 0x99,
@@ -29,6 +29,7 @@ namespace Geometry
 		{
 			return color;
 		}
+		
 
 		Shape(Color color) :color(color) {}
 		virtual ~Shape() {}
@@ -161,13 +162,64 @@ namespace Geometry
 			Shape::info();
 		}
 	};
+	class Circle :public Shape
+	{
+		double radius;
+	
+	public:
+		double get_radius()const
+		{
+			return radius;
+		}
+		void set_radius(double radius)
+		{
+			if (radius <= 0)radius = 10;
+			this->radius = radius;
+		}
+		Circle(double radius, Color color) :Shape(color)
+		{
+			set_radius(radius);
+		}
+		~Circle() {}
+		
+			double get_area()const
+			{
+				return 3.14*(radius*radius);
+			}
+			double get_perimeter()const
+			{
+				return 3.14*(radius) * 2;
+			}
+			void draw()const
+			{
+				HWND hConsole = GetConsoleWindow(); //Окно консоли для обращения
+				HDC hdc = GetDC(hConsole);   //Создание отдельного компонента(контекста)
+				HPEN hPen = CreatePen(PS_SOLID, 10, color); //Создание карандаша v
+				HBRUSH hBrush = CreateSolidBrush(color);  //Создание кисти
+				SelectObject(hdc, hPen);   //Выбираем созданный карандаш
+				SelectObject(hdc, hBrush); //Выбираем созданую кисть
+				::Ellipse(hdc, 0, 0, 50, 50);
+				DeleteObject(hPen);
+				DeleteObject(hBrush);
+				ReleaseDC(hConsole, hdc);
+			}
+			void info()const
+			{
+				cout << typeid(*this).name() << endl;
+				cout << "Радиус: " << radius << endl;
+				Shape::info();
+			}
+		
+	};
 }
+
+
 
 void main()
 {
 	setlocale(LC_ALL, "");
 	//Shape shape(Color::console_blue);
-	Geometry::Square square(5,Geometry::Color::console_red);
+	Geometry::Square square(5, Geometry::Color::console_red);
 	/*cout << "Длина стороны квадрата: " << square.get_side() << endl;
 	cout << "Площадт квадрата:       " << square.get_area() << endl;
 	cout << "Периметр кадрата:       " << square.get_perimeter() << endl;
@@ -176,4 +228,7 @@ void main()
 
 	Geometry::Rectangle rect(50, 30, Geometry::Color::blue);
 	rect.info();
+
+	Geometry::Circle circle(50, Geometry::Color::green);
+	circle.info();
 }
