@@ -27,12 +27,14 @@ namespace Geometry
 
 	enum Defaults
 	{
-		min_start_x = 10,
-		max_start_x = 800,
-		min_start_y = 10,
-		max_start_y = 500,
+		min_start_x = 100,
+		max_start_x = 1000,
+		min_start_y = 50,
+		max_start_y = 800,
 		min_line_width = 5,
-		max_line_width = 20
+		max_line_width = 20,
+		min_line_length = 10,
+		max_line_length = 500
 	};
 
 	class Shape
@@ -308,13 +310,165 @@ namespace Geometry
 		}
 
 	};
-	class Poligon
+	class Triangle :public Shape
 	{
-
+		//double height;
+	public:
+		virtual double get_height()const = 0;
+		Triangle(int start_x,int start_y,unsigned int line_widt,Color color):Shape( start_x, start_y, line_width, color){}
+		~Triangle(){}
+		
 	};
+	class EquilateralTriangle :public Triangle
+	{
+		double side;
+	public:
+		double get_side()const
+		{
+			return side;
+		}
+		void set_side(double side)
+		{
+			if (side < Defaults::min_line_length)this->side = min_line_length;
+			else if (side > Defaults::max_line_length)this->side = Defaults::max_line_length;
+			else this->side = side;
+		}
+		EquilateralTriangle(double side, int start_x, int start_y, unsigned int line_width, Color color) :
+			Triangle(start_x, start_y, line_width, color)
+		{
+			set_side(side);
+		}
+		~EquilateralTriangle() {}
+
+		double get_height()const
+		{
+			return sqrt(pow(side, 2) - pow(side / 2, 2));
+		}
+		double get_area()const
+		{
+			return side * get_height() / 2;
+		}
+		double get_perimeter()const
+		{
+			return side * 3;
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			const POINT verticies[]=
+			{
+				{start_x,start_y + side },
+				{start_x+side,start_y+side},
+				{start_x+side/2,start_y+side-get_height()}
+			};
+
+			::Polygon(hdc,verticies,sizeof(verticies)/sizeof(verticies[0]));
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+		}
+		void info()const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Сторона треугольника: " << side << endl;
+			cout << "Высота треугольника: " << get_height() << endl;
+			Shape::info();
+		}
+	};
+	class IsoscelesTriangle :public Triangle //Равнобедренный треугольник
+	{
+		double base;
+		double side;
+	public:
+		double get_base()const
+		{
+			return base;
+		}
+		double get_side()const
+		{
+			return side;
+		}
+		void set_base(double base)
+		{
+			if (base <= Defaults::min_line_length)base = Defaults::min_line_length;
+			else if (base > Defaults::max_line_length)base = Defaults::max_line_length;
+			//if (base >= side * 2)base /= 2;
+			this->base = base;
+		}
+		void set_side(double side)
+		{
+			if (side <= Defaults::min_line_length)side = Defaults::min_line_length;
+			else if (side > Defaults::max_line_length)side = Defaults::max_line_length;
+			if (side *2<=base)side = base;
+			this->side = side;
+		}
+		IsoscelesTriangle& operator()(double base, double side)
+		{
+			if (base >= side * 2)base = side;
+			set_base(base);
+			set_side(side);
+			return *this;
+		}
+		IsoscelesTriangle(double base, double side, int start_x, int start_y, unsigned int line_width,Color color)
+			: Triangle(start_x, start_y, line_width, color)
+		{
+			operator()(base, side);
+		}
+        ~IsoscelesTriangle(){}
+
+		double get_height()const
+		{
+			return sqrt(pow(side, 2) - pow(base / 2, 2));
+		}
+		double get_area()const
+		{
+			return base * get_height() / 2;
+		}
+		double get_perimeter()const
+		{
+			return base + side * 2;
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			const POINT verticies[] =
+			{
+				{start_x,start_y + side },
+				{start_x + base,start_y + side},
+				{start_x + base / 2,start_y + side - get_height()}
+			};
+
+			::Polygon(hdc, verticies, sizeof(verticies) / sizeof(verticies[0]));
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+		}
+		void info()const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Основаие треугольника: " << base << endl;
+			cout << "Сторона треугольника: " << side << endl;
+			cout << "Высота треугольника: " << get_height() << endl;
+			Shape::info();
+		}
+	};
+	
 
 }
-
 
 
 void main()
@@ -328,7 +482,7 @@ void main()
 	square.draw();*/
 	square.info();
 
-	Geometry::Rectangle rect(150, 200,200,100,5, Geometry::Color::blue);
+	Geometry::Rectangle rect(150, 300,200,100,5, Geometry::Color::blue);
 	rect.info();
 
 	/*Geometry::Circle circle(50, Geometry::Color::green);
@@ -336,4 +490,14 @@ void main()
 
 	Geometry::Circle circle(150, 500,150,15, Geometry::Color::yellow);
 	circle.info();
+
+	Geometry::EquilateralTriangle qtri(200, 200, 200, 5, Geometry::Color::green);
+	qtri.info();
+
+	Geometry::IsoscelesTriangle itri1(100, 150, 200, 200, 5, Geometry::Color::blue);
+	itri1.info();
+
+	Geometry::IsoscelesTriangle itri2(100, 75, 900, 200, 5, Geometry::Color::blue);
+	itri2.info();
+	
 }
