@@ -1,5 +1,11 @@
 #pragma once
+#include"Academy.h"
 #include"Teaher.h"
+
+#define HUMAN_GIVE_PARAMETERS last_name, first_name,age
+#define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
+#define STUDENT_GIVE_PARAMETERS  last_name,  first_name,  age,specialty,  group, year,  rating, attendance
+
 
 class Student :public Human
 {
@@ -9,8 +15,8 @@ class Student :public Human
 	double rating;
 	double attendance;
 public:
-	const std::string get_specialty()const;
-	const std::string get_group()const;
+	const std::string& get_specialty()const;
+	const std::string& get_group()const;
 	unsigned int get_year()const;
 	double get_rating()const;
 	double get_attendance()const;
@@ -25,3 +31,5 @@ public:
 	//////    Methods    /////
 	void print()const;
 };
+
+std::ostream& operator<<(std::ostream& os, const Student& obj);

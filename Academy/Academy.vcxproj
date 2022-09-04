@@ -145,18 +145,16 @@
   <ItemGroup>
     <ClCompile Include="Academy.cpp" />
     <ClCompile Include="Graduate.cpp" />
-    <ClCompile Include="Human.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Student.cpp" />
+    <ClCompile Include="Teacher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Academy.h" />
-    <ClInclude Include="Definesh.h" />
     <ClInclude Include="Graduate.h" />
-    <ClInclude Include="Human.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="Teaher.h" />
   </ItemGroup>

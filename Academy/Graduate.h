@@ -1,4 +1,5 @@
 #pragma once
+#include"Academy.h"
 #include"Student.h"
 
 class Graduate :public Student
@@ -19,3 +20,5 @@ public:
 	~Graduate();
 	void print()const;
 };
+
+std::ostream& operator<<(std::ostream& os, const Graduate& obj);

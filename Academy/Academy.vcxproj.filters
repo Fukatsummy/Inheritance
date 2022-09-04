@@ -24,10 +24,10 @@
     <ClCompile Include="Student.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Human.cpp">
+    <ClCompile Include="Graduate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Graduate.cpp">
+    <ClCompile Include="Teacher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,19 +38,13 @@
     <ClInclude Include="Academy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Teaher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Student.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graduate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Human.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Definesh.h">
+    <ClInclude Include="Teaher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

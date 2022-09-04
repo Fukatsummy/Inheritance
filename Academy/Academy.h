@@ -29,6 +29,8 @@ public:
 	virtual void print()const;
 };
 
+std::ostream& operator<<(std::ostream& os, const Human& obj);
+
 #define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS  last_name,  first_name,  age,specialty,  group, year,  rating, attendance
 
